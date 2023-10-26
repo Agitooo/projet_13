@@ -10,7 +10,10 @@ jobs:
       - image: cimg/python:3.9  # Image de base pour les jobs
 
     steps:
-      - checkout
+      - checkout  # Récupérer le code depuis GitHub
+
+      - setup_remote_docker:  # Configuration de Docker
+          version: 20.10.23
 
       - run:
           name: Build and Push Docker Image
