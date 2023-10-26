@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  app:
+    container_name: oclettings
+    restart: always
+    env_file: .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:8000"
+    networks:
+      - default
+    command: gunicorn --env DJANGO_SETTINGS_MODULE=oc_lettings_site.settings oc_lettings_site.wsgi -w 4 -b :8000 --reload --timeout 300
+
+networks:
+  default:

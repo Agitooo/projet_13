@@ -1,4 +1,6 @@
 **/__pycache__
 *.pyc
-venv
 .idea
+env
+*.env
+*.sql

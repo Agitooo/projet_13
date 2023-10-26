@@ -1,0 +1,5 @@
+Dockerfile
+*.sql
+**/__pycache__
+*.pyc
+.idea
