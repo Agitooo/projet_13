@@ -5,19 +5,33 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  pull-and-build:
+  build-and-deploy:
     docker:
-      - image: arvindr226/alpine-ssh
+      - image: circleci/python:3.9  # Image de base pour les jobs
+
     steps:
       - checkout
-      - run: ssh -oStrictHostKeyChecking=no -v $USER@$IP "./deploy.sh"
+
+      - run:
+          name: Build and Push Docker Image
+          command: |
+            docker buildx build . -t oclettings
+            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+            docker tag oclettings $DOCKERHUB_USERNAME/oclettings:latest
+            docker push $DOCKERHUB_USERNAME/oclettings:latest
+
+      - deploy:
+          name: Deploy to Digital Ocean
+          command: |
+            ssh $DROPLET_USER@$DROPLET_IP "docker pull $DOCKERHUB_USERNAME/oclettings:latest"
+            ssh $DROPLET_USER@$DROPLET_IP "docker-compose -f /usr/src/app/docker-compose.yml up -d"
 
 # Orchestrate our job run sequence
 workflows:
   version: 2
-  build-project:
+  build-and-deploy:
     jobs:
-      - pull-and-build:
+      - build-and-deploy:
           filters:
             branches:
               only:
