@@ -18,13 +18,13 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-            docker login -u DO_TOKEN -p DO_TOKEN
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             docker build -t $DO_REGISTRY/oclettings .
 
       - run:
           name: Push to Docker Hub
           command: |
-            docker login -u DO_TOKEN -p DO_TOKEN
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             docker push $DO_REGISTRY/oclettings:latest
 
 #      - deploy:
@@ -33,7 +33,6 @@ jobs:
 #            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
 #            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f /usr/src/app/docker-compose.yml up -d"
 
-##            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
 ##            docker build -t $DO_REGISTRY/oclettings:latest .
 
 # Orchestrate our job run sequence
