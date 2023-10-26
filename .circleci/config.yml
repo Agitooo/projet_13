@@ -19,22 +19,8 @@ jobs:
           name: Build and Push Docker Image
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-            docker build -t $DO_REGISTRY/oclettings:latest .
-            docker push $DO_REGISTRY/oclettings:latest
-#  push:
-#    docker:
-#      - image: cimg/python:3.9  # Image de base pour les jobs
-#
-#    steps:
-#      - checkout  # Récupérer le code depuis GitHub
-#
-#      - setup_remote_docker:  # Configuration de Docker
-#          version: 20.10.23
-#
-#      - run:
-#          name: Build and Push Docker Image
-#          command: |
-#            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker build --cache-from $DO_REGISTRY/oclettings:latest -t $DO_REGISTRY/oclettings:latest .
+#            docker build -t $DO_REGISTRY/oclettings:latest .
 #            docker push $DO_REGISTRY/oclettings:latest
 
 #      - deploy:
@@ -53,8 +39,3 @@ workflows:
             branches:
               only:
                 - main
-#      - push:
-#          filters:
-#            branches:
-#              only:
-#                - main
