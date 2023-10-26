@@ -7,7 +7,7 @@ version: 2.1
 jobs:
   build-and-deploy:
     docker:
-      - image: circleci/python:3.9  # Image de base pour les jobs
+      - image: cimg/python:3.9  # Image de base pour les jobs
 
     steps:
       - checkout
