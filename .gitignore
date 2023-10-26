@@ -2,5 +2,4 @@
 *.pyc
 .idea
 env
-*.env
 *.sql
