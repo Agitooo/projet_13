@@ -19,7 +19,7 @@ jobs:
           name: Build and Push Docker Image
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-            docker build --cache-from $DO_REGISTRY/oclettings:latest -t $DO_REGISTRY/oclettings .
+            docker build -t $DO_REGISTRY/oclettings .
 
       - run:
           name: Push to Docker Hub
