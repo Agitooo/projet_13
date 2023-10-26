@@ -13,14 +13,14 @@ jobs:
       - checkout  # Récupérer le code depuis GitHub
 
       - setup_remote_docker:  # Configuration de Docker
-          version: 24.0.6
+          version: 20.10.23
 
       - run:
           name: Build and Push Docker Image
 #          env:
 #            DOCKER_PASSWORD: ${{ env.$DOCKER_PASSWORD }}
           command: |
-            docker buildx build . -t "$DO_REGISTRY/oclettings:latest"
+            docker build -t "$DO_REGISTRY/oclettings:latest" .
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push "$DO_REGISTRY/oclettings:latest"
 
