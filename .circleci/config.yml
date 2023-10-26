@@ -18,8 +18,6 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-#            docker login registry.digitalocean.com
-#            doctl registry login
             echo $DOCKER_REGISTRY_PASSWORD | docker login -u $DOCKER_REGISTRY_USERNAME --password-stdin
             docker buildx build . -t "$DO_REGISTRY/oclettings:latest"
             docker push "$DO_REGISTRY/oclettings:latest"
