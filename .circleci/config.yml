@@ -20,8 +20,15 @@ jobs:
           command: |
             docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             docker build --cache-from $DO_REGISTRY/oclettings:latest -t $DO_REGISTRY/oclettings .
-            docker push $DO_REGISTRY/oclettings:latest
 
+      - run:
+        # Pushes the Docker image you created to the Docker Hub.
+        # Replace khabdrick/circleci-tutorial:v1 with the
+				# <docker_hub_username/docker-hub-password:version> you used to build the image above
+          name: Push to Docker Hub
+          command: |
+            docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker push $DO_REGISTRY/oclettings:latest
 #      - deploy:
 #          name: Deploy to Digital Ocean
 #          command: |
