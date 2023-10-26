@@ -18,14 +18,17 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
+#            docker login registry.digitalocean.com
+#            doctl registry login
+            echo $DOCKER_REGISTRY_PASSWORD | docker login -u $DOCKER_REGISTRY_USERNAME --password-stdin
             docker buildx build . -t "$DO_REGISTRY/oclettings:latest"
             docker push "$DO_REGISTRY/oclettings:latest"
 
       - deploy:
           name: Deploy to Digital Ocean
           command: |
-            ssh $DROPLET_USER@$DROPLET_IP "docker pull $DO_REGISTRY/oclettings:latest"
-            ssh $DROPLET_USER@$DROPLET_IP "docker-compose -f /usr/src/app/docker-compose.yml up -d"
+            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
+            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f /usr/src/app/docker-compose.yml up -d"
 
 # Orchestrate our job run sequence
 workflows:
