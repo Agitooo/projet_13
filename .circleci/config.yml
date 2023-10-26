@@ -15,8 +15,12 @@ jobs:
       - setup_remote_docker:  # Configuration de Docker
           version: 20.10.23
 
+      -
+
       - run:
           name: Build and Push Docker Image
+          env:
+            DOCKER_PASSWORD: ${{ env.DOCKER_PASSWORD }}
           command: |
             docker buildx build . -t "$DO_REGISTRY/oclettings:latest"
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
