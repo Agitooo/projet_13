@@ -20,8 +20,8 @@ jobs:
 #          env:
 #            DOCKER_PASSWORD: ${{ env.$DOCKER_PASSWORD }}
           command: |
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker build -t "$DO_REGISTRY/oclettings:latest" .
-            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push "$DO_REGISTRY/oclettings:latest"
 
 #      - deploy:
