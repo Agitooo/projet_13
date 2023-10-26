@@ -13,22 +13,22 @@ jobs:
       - checkout  # Récupérer le code depuis GitHub
 
       - setup_remote_docker:  # Configuration de Docker
-          version: 20.10.23
+          version: 24.0.6
 
       - run:
           name: Build and Push Docker Image
-          env:
-            DOCKER_PASSWORD: ${{ env.$DOCKER_PASSWORD }}
+#          env:
+#            DOCKER_PASSWORD: ${{ env.$DOCKER_PASSWORD }}
           command: |
             docker buildx build . -t "$DO_REGISTRY/oclettings:latest"
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
             docker push "$DO_REGISTRY/oclettings:latest"
 
-      - deploy:
-          name: Deploy to Digital Ocean
-          command: |
-            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
-            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f /usr/src/app/docker-compose.yml up -d"
+#      - deploy:
+#          name: Deploy to Digital Ocean
+#          command: |
+#            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
+#            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f /usr/src/app/docker-compose.yml up -d"
 
 # Orchestrate our job run sequence
 workflows:
