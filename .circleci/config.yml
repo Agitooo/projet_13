@@ -18,8 +18,8 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-            docker buildx build . -t "$DO_REGISTRY/oclettings"
-            docker push "$DO_REGISTRY/oclettings"
+            docker buildx build . -t "$DO_REGISTRY/oclettings:latest"
+            docker push "$DO_REGISTRY/oclettings:latest"
 
       - deploy:
           name: Deploy to Digital Ocean
