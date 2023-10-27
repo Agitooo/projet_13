@@ -25,7 +25,6 @@ jobs:
           name: Push to Docker Hub
           command: |
             docker login $DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
-            doctl registry login --expiry-seconds 600
             docker push $DO_REGISTRY/oclettings:latest
 
 #      - deploy:
