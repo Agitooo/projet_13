@@ -18,13 +18,13 @@ jobs:
       - run:
           name: Build and Push Docker Image
           command: |
-            docker login DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
+            docker login $DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
             docker build -t $DO_REGISTRY/oclettings .
 
       - run:
           name: Push to Docker Hub
           command: |
-            sudo docker login DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
+            docker login $DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
             doctl registry login --expiry-seconds 600
             docker push $DO_REGISTRY/oclettings:latest
 
