@@ -16,22 +16,22 @@ jobs:
           version: 20.10.23
 
       - run:
-          name: Build and Push Docker Image
+          name: Build Image
           command: |
             docker login $DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
             docker build -t $DO_REGISTRY/oclettings .
 
       - run:
-          name: Push to Docker Hub
+          name: Push to Digital Ocean Registry
           command: |
             docker login $DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
             docker push $DO_REGISTRY/oclettings:latest
 
-#      - deploy:
-#          name: Deploy to Digital Ocean
-#          command: |
-#            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
-#            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f /usr/src/app/docker-compose.yml up -d"
+      - deploy:
+          name: Deploy to Digital Ocean
+          command: |
+            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
+            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f /usr/src/app/docker-compose.yml up -d"
 
 ##            docker build -t $DO_REGISTRY/oclettings:latest .
 
