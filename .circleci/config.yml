@@ -24,7 +24,7 @@ jobs:
       - run:
           name: Push to Docker Hub
           command: |
-            docker login $DROPLET_IP:8000 -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+            docker login $DROPLET_IP:5000 -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
             doctl registry login --expiry-seconds 600 -t $DO_API_TOKEN
             docker push $DO_REGISTRY/oclettings:latest
 
