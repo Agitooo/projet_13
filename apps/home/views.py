@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
 
-# Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie quam lobortis leo consectetur
 def index(request):
+    """Lorem ipsum dolor sit amet, consectetur adipiscing elit."""
     return render(request, 'home/index.html')
