@@ -9,3 +9,4 @@ exclude_patterns = [u'_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
 default_html_theme = 'sphinx_rtd_theme'
 version = u''
+master_doc = 'index'
