@@ -19,7 +19,7 @@ SECRET_KEY = env('SECRET_KEY')
 # DEBUG = True
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ocl-app-yvnhl.ondigitalocean.app', 'localhost', '127.0.0.1', '*']
 
 
 # Application definition
