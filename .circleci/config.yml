@@ -5,7 +5,26 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  build-and-deploy:
+  tests:
+    docker:
+      - image: cimg/python:3.9.4
+      steps:
+        - checkout
+        - run:
+            name: Installation des dépendances
+            command: |
+              python -m venv env
+              . env/bin/activate
+              pip install --upgrade pip
+              pip install -r requirements.txt
+        - run:
+            name: Flake8 + Test
+            command: |
+              . env/bin/activate
+              flake8
+              pytest
+
+  build-and-push:
     docker:
       - image: docker:stable  # Image de base pour les jobs
 
@@ -20,6 +39,7 @@ jobs:
           command: |
             docker login $DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
             docker build -t $DO_REGISTRY/oclettings .
+            docker tag $DO_REGISTRY/oclettings:latest $DO_REGISTRY/oclettings:latest
 
       - run:
           name: Push to Digital Ocean Registry
@@ -27,20 +47,45 @@ jobs:
             docker login $DO_REGISTRY -u $DO_API_TOKEN -p $DO_API_TOKEN
             docker push $DO_REGISTRY/oclettings:latest
 
-      - deploy:
+  deploy:
+    machine: true
+    steps:
+      - checkout
+      - run:
           name: Deploy to Digital Ocean
           command: |
-            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
-            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f /usr/src/app/docker-compose.yml up -d"
+            ssh $DROPLET_USER@$DROPLET_IP -i ~./.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
+            ssh $DROPLET_USER@$DROPLET_IP -i ~./.ssh/circleci "docker-compose -f /usr/src/app/docker-compose.yml up -d"
 
-##            docker build -t $DO_REGISTRY/oclettings:latest .
 
 # Orchestrate our job run sequence
 workflows:
   version: 2
-  build-and-deploy:
+  tests:
     jobs:
-      - build-and-deploy:
+      - tests:
+          filters:
+            branches:
+              only:
+                - main
+  build-and-push:
+    jobs:
+      - tests:
+          filters:
+            branches:
+              only:
+                - main
+      - build-and-push:
+          requires:
+            - tests
+          filters:
+            branches:
+              only:
+                - main
+      - deploy:
+          requires:
+            - tests
+            - build-and-push
           filters:
             branches:
               only:
