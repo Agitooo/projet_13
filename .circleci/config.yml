@@ -59,6 +59,7 @@ jobs:
           name: Deploy to Digital Ocean
           command: |
             ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest && 
+            echo pwd && echo ls -A &&
             ./deploy.sh"
 
 # ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f docker-compose.yml up -d"
