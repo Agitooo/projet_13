@@ -58,7 +58,8 @@ jobs:
       - run:
           name: Deploy to Digital Ocean
           command: |
-            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest"
+            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest && 
+            docker run --publish 80:8000 -e PORT=$PORT registry.digitalocean.com/vincent/oclettings:latest"
 
 # ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f docker-compose.yml up -d"
 # Orchestrate our job run sequence
