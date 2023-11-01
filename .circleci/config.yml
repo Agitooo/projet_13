@@ -58,21 +58,20 @@ jobs:
       - run:
           name: Deploy to Digital Ocean
           command: |
-            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest && 
-            ./deploy_project.sh"
+            ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker pull $DO_REGISTRY/oclettings:latest && ./deploy_project.sh"
 
 # ssh $DROPLET_USER@$DROPLET_IP -i ~/.ssh/circleci "docker-compose -f docker-compose.yml up -d"
 # Orchestrate our job run sequence
 #! /bin/bash ./deploy.sh
 workflows:
   version: 2
-#  tests:
-#    jobs:
-#      - tests:
-#          filters:
-#            branches:
-#              only:
-#                - main
+  tests:
+    jobs:
+      - tests:
+          filters:
+            branches:
+              only:
+                - archi-modulaire
   build-and-push:
     jobs:
       - tests:
